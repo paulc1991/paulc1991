@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Charitable Legacy Income Trust™ Calculator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero card">
+      <div id="brandLogoWrap" class="hidden logo-wrap">
+        <img id="brandLogo" src="" alt="" />
+      </div>
+      <p class="kicker" id="brandSiteName">Planned Giving Interactive</p>
+      <h1 id="brandPageTitle">Charitable Legacy Income Trust™ Calculator</h1>
+      <p id="brandIntroText"></p>
+    </section>
+
+    <main class="layout">
+      <section class="card assumptions">
+        <header>
+          <h2>Assumptions</h2>
+          <p>Enter assumptions and run your illustration.</p>
+        </header>
+
+        <div class="group">
+          <h3>Investment assumptions</h3>
+          <label>Principal
+            <input id="accountValue" type="number" min="10000" step="1000" />
+          </label>
+          <label>Annual rate of return (%)
+            <input id="growthRate" type="number" min="0" max="15" step="0.1" />
+          </label>
+          <div class="grid-2">
+            <label>Capital appreciation (%) of investment return
+              <input id="capitalAppreciationRate" type="number" min="0" max="100" step="0.1" />
+            </label>
+            <label>Interest income (%) of investment return
+              <input id="interestIncomeRate" type="number" min="0" max="100" step="0.1" />
+            </label>
+          </div>
+          <small>These two fields auto-balance to total 100%.</small>
+        </div>
+
+        <div class="group">
+          <h3>Income structure</h3>
+          <div class="inline-radio">
+            <label><input type="radio" name="structureType" value="crut" checked /> CRUT</label>
+            <label><input type="radio" name="structureType" value="crat_cga" /> CRAT/CGA</label>
+          </div>
+          <div class="grid-2">
+            <label>CRT/CGA payout rate (%)
+              <input id="payoutRate" type="number" min="0" max="50" step="0.1" />
+            </label>
+            <label>Distribution taken
+              <select id="payoutTiming">
+                <option value="end_of_year">End of year</option>
+                <option value="beginning_of_year">Beginning of year</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Tax and ages</h3>
+          <div class="grid-2">
+            <label>State and Federal tax rate (%) on pre-tax retirement withdrawals
+              <input id="distributionTaxRate" type="number" min="0" max="60" step="0.1" />
+            </label>
+            <label>State and Federal tax rate (%) on after-tax investing
+              <input id="afterTaxInvestingTaxRate" type="number" min="0" max="50" step="0.1" />
+            </label>
+          </div>
+          <div class="grid-2">
+            <label>Owner age at death
+              <input id="ownerAge" type="number" min="18" max="110" step="1" />
+            </label>
+            <label>Beneficiary age at death of owner
+              <input id="beneficiaryAge" type="number" min="0" max="110" step="1" />
+            </label>
+          </div>
+          <label>Term (years)
+            <input id="termYears" type="number" min="1" max="60" step="1" />
+          </label>
+        </div>
+
+        <div class="group">
+          <h3>Comparison method for inherited IRA</h3>
+          <label>
+            <select id="scenarioMode">
+              <option value="year_10_distribution" id="optionYear10">Beneficiary keeps inherited IRA invested for 10 years, then withdraws</option>
+              <option value="annual_distribution_plus_year_10">Beneficiary takes annual distributions plus final year 10 distribution</option>
+              <option value="immediate_distribution">Immediate taxable withdrawal and after-tax reinvestment</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="buttons">
+          <button id="calculateBtn" class="btn btn-primary" type="button">Calculate</button>
+          <button id="resetBtn" class="btn" type="button">Reset assumptions</button>
+          <button id="defaultTermBtn" class="btn" type="button">Set term from beneficiary age</button>
+        </div>
+      </section>
+
+      <section class="results">
+        <article class="card">
+          <h2>Assumptions Used</h2>
+          <div id="assumptionsSummary" class="assumptions-summary"></div>
+        </article>
+
+        <article class="card">
+          <h2>Projected outcomes</h2>
+          <p class="muted">Option A bar includes income benefit, remaining outside value, and tax drag. Option B stacks income + projected charitable remainder.</p>
+          <div id="scenarioNotes" class="scenario-notes"></div>
+
+          <div class="chart-wrap">
+            <div class="y-axis" id="yLabels"></div>
+            <div class="bars">
+              <div class="bar-col">
+                <div class="bar" id="barA">
+                  <div id="barATax" class="seg tax"></div>
+                  <div id="barARemaining" class="seg remaining"></div>
+                  <div id="barABeneficiary" class="seg beneficiary"></div>
+                </div>
+                <p>Option A</p>
+                <small id="barATotal"></small>
+              </div>
+              <div class="bar-col">
+                <div class="bar" id="barB">
+                  <div id="barBCharity" class="seg charity"></div>
+                  <div id="barBBeneficiary" class="seg beneficiary"></div>
+                </div>
+                <p id="barBLabel">Option B</p>
+                <small id="barBTotal"></small>
+              </div>
+            </div>
+          </div>
+
+          <div class="legend">
+            <span><i class="swatch beneficiary"></i> Income benefit to beneficiary</span>
+            <span><i class="swatch remaining"></i> Remaining outside value</span>
+            <span><i class="swatch charity"></i> Projected remainder to charity</span>
+            <span><i class="swatch tax"></i> Estimated tax drag</span>
+          </div>
+        </article>
+
+        <div class="metrics-grid">
+          <article class="card">
+            <h3>Metrics — Option A</h3>
+            <div id="scenarioAMetrics"></div>
+          </article>
+          <article class="card">
+            <h3 id="scenarioBHead">Metrics — Option B</h3>
+            <div id="scenarioBMetrics"></div>
+          </article>
+        </div>
+
+        <article class="card">
+          <h3>Narrative summary</h3>
+          <p id="narrativeSummary"></p>
+        </article>
+
+        <article class="card cta">
+          <h3>Request a personalized illustration</h3>
+          <p>Use this estimate as a planning conversation starter.</p>
+          <div class="buttons">
+            <a id="requestIllustrationBtn" class="btn btn-primary" href="#">Request a personalized illustration</a>
+            <a id="contactGiftPlanningBtn" class="btn" href="#">Contact Planned Giving Interactive</a>
+          </div>
+        </article>
+
+        <article class="card hidden" id="warningsBox">
+          <h3>Warning notes</h3>
+          <div id="warningsList"></div>
+        </article>
+
+        <article class="card">
+          <h3>Year-by-year detail table</h3>
+          <div class="table-wrap">
+            <table id="detailTable"></table>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <!-- Script order matters:
+       1) brand.js: branding values only
+       2) data.js: defaults + IRS table
+       3) calculations.js: all formulas/simulations
+       4) app.js: DOM/event wiring and rendering -->
+  <script src="brand.js"></script>
+  <script src="data.js"></script>
+  <script src="calculations.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
