@@ -1,0 +1,11 @@
+{
+  "dataset": "rates_7520",
+  "version": "2026.04",
+  "last_updated": "2026-04-01",
+  "source": "IRS monthly section 7520 rate publication",
+  "records": [
+    { "effective_month": "2026-02", "rate": 0.046 },
+    { "effective_month": "2026-03", "rate": 0.047 },
+    { "effective_month": "2026-04", "rate": 0.048 }
+  ]
+}

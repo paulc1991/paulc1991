@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gift Planners Workstation 2.0 — CGA Modules</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Gift Planners Workstation 2.0</p>
+          <h1>Charitable Gift Annuity Suite</h1>
+          <p class="subhead">Separate calculator modules plus full presentation set generation.</p>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <aside class="column controls">
+          <article class="panel">
+            <h2>Personalization</h2>
+            <div class="grid two">
+              <label>Prepared for<input name="preparedFor" type="text" value="Judy Reid" /></label>
+              <label>Prepared by<input name="preparedBy" type="text" value="Gift Planning Team" /></label>
+            </div>
+            <div class="grid two">
+              <label>Date in heading<input name="headingDate" type="date" /></label>
+              <label>Organization<input name="organization" type="text" value="National Gift Annuity Foundation" /></label>
+            </div>
+            <label>Disclaimer
+              <select name="disclaimerTone">
+                <option value="illustration">For illustration purposes only</option>
+                <option value="internal">Internal planning use only</option>
+                <option value="client">Review with legal/tax advisors</option>
+              </select>
+            </label>
+            <label>Case notes<textarea name="caseNotes" rows="3" placeholder="Context, donor goals, constraints..."></textarea></label>
+          </article>
+
+          <article class="panel">
+            <h2>Tax Profile</h2>
+            <div class="grid three">
+              <label>Ordinary income %<input name="ordinaryTaxRate" id="ordinaryTaxRate" type="number" min="0" max="60" step="0.1" value="37" /></label>
+              <label>Capital gain %<input name="capitalGainRate" id="capitalGainRate" type="number" min="0" max="40" step="0.1" value="20" /></label>
+              <label>State tax %<input name="stateTaxRate" id="stateTaxRate" type="number" min="0" max="20" step="0.1" value="0" /></label>
+            </div>
+            <div class="grid two">
+              <label>NIIT applies?
+                <select name="niitApplies" id="niitApplies"><option value="yes">Yes</option><option value="no">No</option></select>
+              </label>
+              <label>State allows charitable deduction?
+                <select name="stateAllowsDeduction"><option value="yes">Yes</option><option value="no">No</option></select>
+              </label>
+            </div>
+          </article>
+
+          <article class="panel">
+            <h2>Data Feed Status</h2>
+            <ul class="fact-list compact" id="feedStatusList">
+              <li>7520 rates: <span id="status7520">Loading…</span></li>
+              <li>ACGA rates: <span id="statusAcga">Loading…</span></li>
+              <li>Tax profiles: <span id="statusTax">Loading…</span></li>
+              <li>Templates: <span id="statusTemplates">Loading…</span></li>
+            </ul>
+            <button id="refreshFeeds" type="button">Refresh Local Data Feeds</button>
+          </article>
+
+          <article class="panel">
+            <h2>Gift Options (up to 3)</h2>
+            <div id="moduleLibrary" class="stack"></div>
+            <h3>Your Selections</h3>
+            <div id="selectedModules" class="stack"></div>
+          </article>
+
+          <article class="panel">
+            <h2>Calculator Inputs</h2>
+            <label>Active calculator<select id="activeModule"></select></label>
+
+            <h3>Core Gift Inputs</h3>
+            <div class="grid two">
+              <label>Property type<select name="propertyType"><option value="cash">Cash</option><option value="ltcg">Long-term gain property</option></select></label>
+              <label>Gift value ($)<input name="giftAmount" type="number" min="1000" step="100" value="187500" /></label>
+            </div>
+            <div class="grid two">
+              <label>Cost basis ($)<input name="costBasis" type="number" min="0" step="100" value="144000" /></label>
+              <label>ACGA payout rate (%)<input name="baseRate" id="baseRate" type="number" min="0.5" max="20" step="0.01" value="6.8" /></label>
+            </div>
+            <div class="grid three">
+              <label>Payment frequency<select name="paymentFrequency"><option value="annual">Annual</option><option value="semiannual">Semiannual</option><option value="quarterly" selected>Quarterly</option><option value="monthly">Monthly</option></select></label>
+              <label>Payment timing<select name="paymentTiming"><option value="end">End of period</option><option value="begin">Beginning of period</option></select></label>
+              <label>7520 / discount rate (%)<input name="discountRate" id="discountRate" type="number" min="0" max="20" step="0.01" value="4.8" /></label>
+            </div>
+            <div class="grid three">
+              <label>Primary age<input name="annuitantAge" id="annuitantAge" type="number" min="18" max="100" value="72" /></label>
+              <label>Secondary age<input name="secondaryAge" type="number" min="18" max="100" value="70" /></label>
+              <label>Projection years<input name="projectionYears" type="number" min="5" max="60" value="25" /></label>
+            </div>
+
+            <h3>Module-specific Inputs</h3>
+            <div id="moduleFields" class="grid two"></div>
+            <button id="runButton" type="button">Generate Illustration Package</button>
+            <p class="fine-print">Use current ACGA rates from <a href="https://www.acga-web.org/current-gift-annuity-rates" target="_blank" rel="noreferrer">the official ACGA table</a>.</p>
+          </article>
+        </aside>
+
+        <section class="column output">
+          <article class="panel">
+            <h2>Presentation Builder</h2>
+            <p class="fine-print">Choose exactly which outputs to generate for this illustration.</p>
+            <div id="presentationCatalog" class="catalog"></div>
+          </article>
+
+          <article class="panel" id="outputPanel">
+            <h2>Illustration Output</h2>
+            <p class="placeholder">Select gift option + presentation set, then click “Generate Illustration Package”.</p>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <template id="outputTemplate">
+      <div class="report">
+        <header class="report-header">
+          <h3 data-field="reportTitle"></h3>
+          <p data-field="reportMeta"></p>
+        </header>
+
+        <section>
+          <h4>Basic Charts</h4>
+          <div class="kpis" data-field="kpis"></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Category</th><th>Annual Amount</th><th>Estimated Tax</th><th>Net</th></tr></thead>
+              <tbody data-field="taxRows"></tbody>
+            </table>
+          </div>
+          <ul class="fact-list" data-field="actuarialFacts"></ul>
+        </section>
+
+        <section>
+          <h4>Projection Charts</h4>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Year</th><th>Age</th><th>Payment</th><th>Tax-Free</th><th>Capital Gain</th><th>Ordinary</th><th>Discounted Value</th></tr>
+              </thead>
+              <tbody data-field="scheduleRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section>
+          <h4>Narratives / Documents</h4>
+          <div data-field="generatedPresentationDocs" class="doc-grid"></div>
+        </section>
+
+        <p class="disclaimer" data-field="disclaimer"></p>
+      </div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
