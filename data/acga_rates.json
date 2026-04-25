@@ -1,0 +1,14 @@
+{
+  "dataset": "acga_rates",
+  "version": "2024.01-demo",
+  "last_updated": "2024-01-01",
+  "source": "ACGA recommended rates table",
+  "records": [
+    { "effective_date": "2024-01-01", "arrangement": "immediate", "age": 70, "rate": 0.062 },
+    { "effective_date": "2024-01-01", "arrangement": "immediate", "age": 72, "rate": 0.068 },
+    { "effective_date": "2024-01-01", "arrangement": "immediate", "age": 75, "rate": 0.075 },
+    { "effective_date": "2024-01-01", "arrangement": "deferred", "age": 60, "rate": 0.055 },
+    { "effective_date": "2024-01-01", "arrangement": "deferred", "age": 65, "rate": 0.06 },
+    { "effective_date": "2024-01-01", "arrangement": "twoLife", "age": 72, "rate": 0.061 }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "dataset": "template_versions",
+  "version": "2026.04",
+  "last_updated": "2026-04-07",
+  "source": "Compliance-approved narrative template versions",
+  "records": [
+    { "template": "Proposal Letter", "version": "v2026.04", "effective_date": "2026-04-07" },
+    { "template": "Gift Annuity Disclosure Statement", "version": "v2026.04", "effective_date": "2026-04-07" },
+    { "template": "IRS Discount Rate Election Statement", "version": "v2026.04", "effective_date": "2026-04-07" },
+    { "template": "Gift Annuity Agreement", "version": "v2026.04", "effective_date": "2026-04-07" }
+  ]
+}
